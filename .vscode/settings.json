@@ -1,0 +1,15 @@
+{
+    "cSpell.words": [
+        "werkzeug"
+    ],
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "Lottery",
+            "group": "CS",
+            "database": "${workspaceFolder:Coursework}/lottery.db"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}
