@@ -11,7 +11,6 @@ from wtforms.validators import Email
 from app import db
 from models import User
 from users.forms import RegisterForm, LoginForm
-from lottery.views import lottery
 
 # CONFIG
 users_blueprint = Blueprint('users', __name__, template_folder='templates')
@@ -65,7 +64,7 @@ def login():
             flash('Incorrect login details.')
             return render_template('login.html', form=form)
 
-        return lottery()
+        return redirect('profile', code=303)
     
     return render_template('login.html', form=form)
 
