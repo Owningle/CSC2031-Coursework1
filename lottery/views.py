@@ -6,7 +6,8 @@ from flask import Blueprint, render_template, request, flash
 from app import db
 from models import Draw, User
 
-# TEMP
+# TEMP DRAWKEY
+#TODO: Replace with per user keys
 draw_key = User.query.first().draw_key
 
 # CONFIG
