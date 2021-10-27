@@ -1,9 +1,9 @@
 # IMPORTS
+from copy import deepcopy
 import logging
 
-from flask import Blueprint, render_template, request, flash
-
 from app import db
+from flask import Blueprint, flash, render_template, request
 from models import Draw, User
 
 # TEMP DRAWKEY
@@ -44,11 +44,18 @@ def add_draw():
 def view_draws():
     # get all draws that have not been played [played=0]
     playable_draws = Draw.query.filter_by(played=False).all()  # TODO: filter playable draws for current user
+    playable_draws_copy = list(map(lambda x: deepcopy(x), playable_draws))
+
+    decrypted_playable_draws = []
+
+    for p in playable_draws_copy:
+        p.view_draw(draw_key)
+        decrypted_playable_draws.append(p)
 
     # if playable draws exist
-    if len(playable_draws) != 0:
+    if len(decrypted_playable_draws) != 0:
         # re-render lottery page with playable draws
-        return render_template('lottery.html', playable_draws=playable_draws)
+        return render_template('lottery.html', playable_draws=decrypted_playable_draws)
     else:
         flash('No playable draws.')
         return lottery()
