@@ -2,6 +2,7 @@
 from datetime import datetime
 import logging
 from functools import wraps
+import pyotp
 
 from werkzeug.security import check_password_hash
 
@@ -63,6 +64,10 @@ def login():
         
         if not user or not check_password_hash(user.password, form.password.data):
             flash('Incorrect login details.')
+            return render_template('login.html', form=form)
+        
+        if not pyotp.TOTP(user.pin_key).verify(form.pin.data):
+            flash("You have supplied an invalid 2FA token!", "danger")
             return render_template('login.html', form=form)
 
         login_user(user)
