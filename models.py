@@ -92,8 +92,17 @@ def init_db():
                  lastname='Jones',
                  phone='0191-123-4567',
                  role='admin')
+    
+    user = User(email='user@email.com',
+                 password='User1!',
+                 pin_key='BFB5S34STBLZCOB22K6PPYDCMZMH46OJ',
+                 firstname='Bob',
+                 lastname='Billy',
+                 phone='0191-123-4567',
+                 role='user')
 
     db.session.add(admin)
+    db.session.add(user)
     db.session.commit()
 
 
