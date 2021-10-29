@@ -98,7 +98,10 @@ def login():
         db.session.add(user)
         db.session.commit()
 
-        return redirect(url_for('users.profile'), code=303)
+        if current_user.role == 'admin':
+            return redirect(url_for('admin.admin'))
+        else:
+            return redirect(url_for('user.profile'))
 
     return render_template('login.html', form=form)
 
