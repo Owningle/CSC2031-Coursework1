@@ -7,5 +7,5 @@
   CSC2031 Security & Programming Paradigms
 </h2>
 
-<p>{{ current_user.firstname  + " " + current_user.lastname }} | ID: {{ current_user.id }}</p>
+<p>{% if current_user.is_authenticated %} {{ current_user.firstname  + " " + current_user.lastname }} | ID: {{ current_user.id }} {% else %} Anonymous {% endif %}</p>
 {% endblock %}
