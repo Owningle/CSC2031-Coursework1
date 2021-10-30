@@ -47,7 +47,7 @@ def add_draw():
 @requires_roles('user')
 def view_draws():
     # get all draws that have not been played [played=0]
-    playable_draws = Draw.query.filter_by(played=False).all()  # TODO: filter playable draws for current user
+    playable_draws = Draw.query.filter_by(played=False, id=current_user.id).all()
     playable_draws_copy = list(map(lambda x: deepcopy(x), playable_draws))
 
     decrypted_playable_draws = []
