@@ -2,15 +2,11 @@
 from copy import deepcopy
 import logging
 
-from flask_login import login_required
+from flask_login import current_user, login_required
 
 from app import db, requires_roles
 from flask import Blueprint, flash, render_template, request
 from models import Draw, User
-
-# TEMP DRAWKEY
-#TODO: Replace with per user keys
-draw_key = User.query.first().draw_key
 
 # CONFIG
 lottery_blueprint = Blueprint('lottery', __name__, template_folder='templates')
@@ -34,7 +30,7 @@ def add_draw():
     submitted_draw.strip()
 
     # create a new draw with the form data.
-    new_draw = Draw(user_id=1, draw=submitted_draw, win=False, round=0, draw_key = draw_key)  # TODO: update user_id [user_id=1 is a placeholder]
+    new_draw = Draw(user_id=1, draw=submitted_draw, win=False, round=0, draw_key = current_user.draw_key)  # TODO: update user_id [user_id=1 is a placeholder]
 
     # add the new draw to the database
     db.session.add(new_draw)
@@ -57,7 +53,7 @@ def view_draws():
     decrypted_playable_draws = []
 
     for p in playable_draws_copy:
-        p.view_draw(draw_key)
+        p.view_draw(current_user.draw_key)
         decrypted_playable_draws.append(p)
 
     # if playable draws exist
