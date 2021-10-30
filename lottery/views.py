@@ -71,7 +71,7 @@ def view_draws():
 @requires_roles('user')
 def check_draws():
     # get played draws
-    played_draws = Draw.query.filter_by(played=True).all()  # TODO: filter played draws for current user
+    played_draws = Draw.query.filter_by(played=True, id=current_user.id).all()
 
     # if played draws exist
     if len(played_draws) != 0:
