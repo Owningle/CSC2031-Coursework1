@@ -88,8 +88,7 @@ def check_draws():
 @login_required
 @requires_roles('user')
 def play_again():
-    delete_played = Draw.__table__.delete().where(Draw.played)  # TODO: delete played draws for current user only
-    db.session.execute(delete_played)
+    delete_played = Draw.__table__.delete().where(Draw.played, id=current_user.draw_key)
     db.session.commit()
 
     flash("All played draws deleted.")
