@@ -6,6 +6,7 @@ import socket
 from flask import Flask, abort, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, current_user
+from flask_talisman import Talisman
 from werkzeug.exceptions import HTTPException
 
 # LOGGING
@@ -32,6 +33,19 @@ app.config['SECRET_KEY'] = 'LongAndRandomSecretKey'
 
 # initialise database
 db = SQLAlchemy(app)
+
+# security headers
+csp = {
+    'default-src': [
+        '\'self\'',
+        'https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css'
+    ],
+    'script-src': [
+        '\'self\''
+    ]
+}
+
+talisman = Talisman(app, content_security_policy=csp)
 
 # FUNCTIONS
 def requires_roles(*roles):
