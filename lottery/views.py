@@ -53,7 +53,7 @@ def view_draws():
     decrypted_playable_draws = []
 
     for p in playable_draws_copy:
-        p.view_draw(current_user.draw_key)
+        p.draw = p.view_draw(current_user.draw_key)
         decrypted_playable_draws.append(p)
 
     # if playable draws exist
@@ -77,7 +77,7 @@ def check_draws():
     decrypted_playable_draws = []
 
     for p in playable_draws_copy:
-        p.view_draw(current_user.draw_key)
+        p.draw = p.view_draw(current_user.draw_key)
         decrypted_playable_draws.append(p)
 
     # if played draws exist
