@@ -39,6 +39,7 @@ def requires_roles(*roles):
 def index():
     return render_template('index.html')
 
+# Handle all errors
 @app.errorhandler(HTTPException)
 def handle_exception(e):
     return render_template('error.html', error = e)
