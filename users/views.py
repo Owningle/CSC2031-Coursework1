@@ -48,6 +48,8 @@ def register():
         db.session.add(new_user)
         db.session.commit()
 
+        logging.warning('SECURITY - User registration [%s, %s]', form.email.data, request.remote_addr)
+
         # sends user to login page
         return redirect(url_for('users.login'))
     # if request method is GET or form not valid re-render signup page
@@ -58,14 +60,15 @@ def register():
 @users_blueprint.route('/login', methods=['GET', 'POST'])
 def login():
 
+    form = LoginForm()
+
     # if session attribute logins does not exist create attribute logins
     if not session.get('logins'):
         session['logins'] = 0
     # if login attempts is 3 or more create an error message
     elif session.get('logins') >= 3:
         flash('Number of incorrect logins exceeded')
-
-    form = LoginForm()
+        logging.warning('SECURITY - Failed log in (Exceeded login attempts) [%s, %s]', form.email.data, request.remote_addr)
 
     if form.validate_on_submit():
         # increase login attempts by 1
@@ -81,11 +84,14 @@ def login():
                 flash('Please check your login details and try again. 1 login attempt remaining')
             else:
                 flash('Please check your login details and try again. 2 login attempts remaining')
+            
+            logging.warning('SECURITY - Failed log in (Invalid credentials) [%s, %s]', form.email.data, request.remote_addr)
 
             return render_template('login.html', form=form)
 
         if not pyotp.TOTP(user.pin_key).verify(form.pin.data):
             flash("You have supplied an invalid 2FA token!", "danger")
+            logging.warning('SECURITY - Failed log in (Invalid 2FA token) [%s, %s]', form.email.data, request.remote_addr)
             return render_template('login.html', form=form)
 
         # if user is verified reset login attempts to 0
@@ -97,6 +103,8 @@ def login():
         user.current_logged_in = datetime.now()
         db.session.add(user)
         db.session.commit()
+
+        logging.warning('SECURITY - Log in [%s, %s, %s]', current_user.id, current_user.email, request.remote_addr)
 
         if current_user.role == 'admin':
             return redirect(url_for('admin.admin'))
@@ -111,6 +119,7 @@ def login():
 @users_blueprint.route('/logout')
 @login_required
 def logout():
+    logging.warning('SECURITY - Log out [%s, %s, %s]', current_user.id, current_user.email, request.remote_addr)
     logout_user()
     return redirect(url_for('index'))
 
