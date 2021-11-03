@@ -113,14 +113,17 @@ def run_lottery():
             # for each unplayed user draw
             for draw in user_draws:
 
+                # skip the winning draw
+                if draw.user_id == 0: continue
+
                 # get the owning user (instance/object)
                 user = User.query.filter_by(id=draw.user_id).first()
 
                 # if user draw matches current unplayed winning draw
-                if draw.draw == current_winning_draw.draw:
+                if draw.view_draw(user.draw_key) == current_winning_draw.view_draw(current_user.draw_key):
 
                     # add details of winner to list of results
-                    results.append((current_winning_draw.round, draw.draw, draw.user_id, user.email))
+                    results.append((current_winning_draw.round, draw.view_draw(user.draw_key), draw.user_id, user.email))
 
                     # update draw as a winning draw (this will be used to highlight winning draws in the user's
                     # lottery page)
