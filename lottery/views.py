@@ -71,11 +71,18 @@ def view_draws():
 @requires_roles('user')
 def check_draws():
     # get played draws
-    played_draws = Draw.query.filter_by(played=True, user_id=current_user.id).all()
+    playable_draws = Draw.query.filter_by(played=True, user_id=current_user.id).all()
+    playable_draws_copy = list(map(lambda x: deepcopy(x), playable_draws))
+
+    decrypted_playable_draws = []
+
+    for p in playable_draws_copy:
+        p.view_draw(current_user.draw_key)
+        decrypted_playable_draws.append(p)
 
     # if played draws exist
-    if len(played_draws) != 0:
-        return render_template('lottery.html', results=played_draws, played=True)
+    if len(decrypted_playable_draws) != 0:
+        return render_template('lottery.html', results=decrypted_playable_draws, played=True)
 
     # if no played draws exist [all draw entries have been played therefore wait for next lottery round]
     else:

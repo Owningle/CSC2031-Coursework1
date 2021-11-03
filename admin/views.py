@@ -1,4 +1,5 @@
 # IMPORTS
+from copy import deepcopy
 from flask import Blueprint, render_template, request, flash
 from flask_login import current_user, login_required
 from app import db, requires_roles
@@ -52,7 +53,7 @@ def create_winning_draw():
     submitted_draw.strip()
 
     # create a new draw object with the form data.
-    new_winning_draw = Draw(user_id=0, draw=submitted_draw, win=True, round=round)
+    new_winning_draw = Draw(user_id=0, draw=submitted_draw, win=True, round=round, draw_key=current_user.draw_key)
 
     # add the new winning draw to the database
     db.session.add(new_winning_draw)
@@ -71,11 +72,14 @@ def view_winning_draw():
 
     # get winning draw from DB
     current_winning_draw = Draw.query.filter_by(win=True).first()
+    current_winning_draw_copy = deepcopy(current_winning_draw)
 
     # if a winning draw exists
-    if current_winning_draw:
+    if current_winning_draw_copy:
+        print(current_winning_draw.view_draw(current_user.draw_key))
+        current_winning_draw_copy.draw = current_winning_draw_copy.view_draw(current_user.draw_key)
         # re-render admin page with current winning draw and lottery round
-        return render_template('admin.html', winning_draw=current_winning_draw, name=current_user.firstname)
+        return render_template('admin.html', winning_draw=current_winning_draw_copy, name=current_user.firstname)
 
     # if no winning draw exists, rerender admin page
     flash("No winning draw exists. Please add winning draw.")
