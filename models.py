@@ -79,7 +79,7 @@ class Draw(db.Model):
         db.session.commit()
     
     def view_draw(self, draw_key):
-        self.draw = decrypt(self.draw, draw_key)
+        return decrypt(self.draw, draw_key)
 
 
 def init_db():
