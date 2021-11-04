@@ -48,6 +48,7 @@ def create_winning_draw():
     # get new winning draw entered in form
     submitted_draw = ''
     for i in range(6):
+        # Validation
         try:
             num = int(request.form.get('no' + str(i + 1)))
         except ValueError:

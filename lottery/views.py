@@ -1,6 +1,5 @@
 # IMPORTS
 from copy import deepcopy
-import logging
 
 from flask_login import current_user, login_required
 
@@ -24,6 +23,7 @@ def lottery():
 @login_required
 @requires_roles('user')
 def add_draw():
+    # Validation
     submitted_draw = ''
     for i in range(6):
         try:

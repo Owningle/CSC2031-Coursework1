@@ -1,7 +1,6 @@
 # IMPORTS
 from datetime import datetime
 import logging
-from functools import wraps
 import pyotp
 
 from werkzeug.security import check_password_hash
@@ -114,8 +113,6 @@ def login():
     return render_template('login.html', form=form)
 
 # user logout
-
-
 @users_blueprint.route('/logout')
 @login_required
 def logout():
@@ -125,7 +122,6 @@ def logout():
 
 
 # view user profile
-
 @users_blueprint.route('/profile')
 @login_required
 @requires_roles('user')

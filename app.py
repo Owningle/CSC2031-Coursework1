@@ -105,4 +105,4 @@ if __name__ == "__main__":
     app.register_blueprint(admin_blueprint)
     app.register_blueprint(lottery_blueprint)
 
-    app.run(host=my_host, port=5000, debug=True)
+    app.run(host=my_host, port=free_port, debug=True)
