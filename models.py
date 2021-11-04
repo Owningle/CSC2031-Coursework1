@@ -85,6 +85,7 @@ class Draw(db.Model):
 def init_db():
     db.drop_all()
     db.create_all()
+    # Testing users
     admin = User(email='admin@email.com',
                  password='Admin1!',
                  pin_key='BFB5S34STBLZCOB22K6PPYDCMZMH46OJ',
@@ -99,22 +100,6 @@ def init_db():
                  firstname='Bob',
                  lastname='Billy',
                  phone='0191-123-4567',
-                 role='user')
-    
-    bob = User(email='bob@email.com',
-                 password='Pwd123456&',
-                 pin_key='5NMO6KPHI5OY7SYHZJJ5K76RVNQRBYWG',
-                 firstname='Bob',
-                 lastname='Brown',
-                 phone='0191-987-4321',
-                 role='user')
-    
-    carol = User(email='carol@email.com',
-                 password='caroL$$987',
-                 pin_key='NJC2Q4YVK3JPQCKBVVFFJABDAZTYJPHL',
-                 firstname='Carol',
-                 lastname='Smith',
-                 phone='0191-456-7654',
                  role='user')
 
     db.session.add(admin)
