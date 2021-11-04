@@ -76,7 +76,6 @@ def view_winning_draw():
 
     # if a winning draw exists
     if current_winning_draw_copy:
-        print(current_winning_draw.view_draw(current_user.draw_key))
         current_winning_draw_copy.draw = current_winning_draw_copy.view_draw(current_user.draw_key)
         # re-render admin page with current winning draw and lottery round
         return render_template('admin.html', winning_draw=current_winning_draw_copy, name=current_user.firstname)
