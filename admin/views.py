@@ -48,8 +48,17 @@ def create_winning_draw():
     # get new winning draw entered in form
     submitted_draw = ''
     for i in range(6):
-        submitted_draw += request.form.get('no' + str(i + 1)) + ' '
-    # remove any surrounding whitespace
+        try:
+            num = int(request.form.get('no' + str(i + 1)))
+        except ValueError:
+            flash('Draw must be integer.')
+            return admin()
+        
+        if num < 1 or num > 60:
+            flash('Invalid draw.')
+            return admin()
+
+        submitted_draw += str(num) + ' '
     submitted_draw.strip()
 
     # create a new draw object with the form data.

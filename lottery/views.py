@@ -26,7 +26,17 @@ def lottery():
 def add_draw():
     submitted_draw = ''
     for i in range(6):
-        submitted_draw += request.form.get('no' + str(i + 1)) + ' '
+        try:
+            num = int(request.form.get('no' + str(i + 1)))
+        except ValueError:
+            flash('Draw must be integer.')
+            return lottery()
+        
+        if num < 1 or num > 60:
+            flash('Invalid draw.')
+            return lottery()
+
+        submitted_draw += str(num) + ' '
     submitted_draw.strip()
 
     # create a new draw with the form data.
