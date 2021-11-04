@@ -10,7 +10,7 @@ from flask import Blueprint, render_template, flash, redirect, session, url_for,
 from flask_login import current_user, login_required, login_user, logout_user
 from wtforms.validators import Email
 
-from app import db
+from app import db, requires_roles
 from models import User
 from users.forms import RegisterForm, LoginForm
 
@@ -128,6 +128,7 @@ def logout():
 
 @users_blueprint.route('/profile')
 @login_required
+@requires_roles('user')
 def profile():
     return render_template('profile.html', name=current_user.firstname)
 
